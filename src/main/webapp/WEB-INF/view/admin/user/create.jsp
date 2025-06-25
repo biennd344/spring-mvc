@@ -47,55 +47,72 @@
                                                 <h3>Create a User</h3>
                                                 <hr />
                                                 <form:form method="post" enctype="multipart/form-data"
-                                                    action="/admin/user/create" modelAttribute="newUser" class="row">
-                                                    <div class="mb-3 col-12 col-md-6">
-                                                        <label for="form-label">Email:</label>
-                                                        <form:input type="email" class="form-control" path="email" />
-                                                    </div>
+                                                    action="/admin/user/create" modelAttribute="newUser"
+                                                    class="row g-3">
 
-                                                    <div class="mb-3 col-12 col-md-6">
-                                                        <label for="form-label">Password:</label>
-                                                        <form:input type="password" class="form-control"
-                                                            path="password" />
+                                                    <div class="col-12 col-md-6">
+                                                        <c:set var="errorEmail">
+                                                            <form:errors path="email" cssClass="invalid-feedback" />
+                                                        </c:set>
+                                                        <label for="email" class="form-label">Email:</label>
+                                                        <form:input type="email"
+                                                            class="form-control ${not empty errorEmail ? 'is-invalid' : ''}"
+                                                            path="email" />
+                                                        ${errorEmail}
                                                     </div>
-                                                    <div class="mb-3 col-12 col-md-6">
-                                                        <label for="form-label">Phone number:</label>
+                                                    <div class="col-12 col-md-6">
+                                                        <c:set var="errorPassword">
+                                                            <form:errors path="password" cssClass="invalid-feedback" />
+                                                        </c:set>
+                                                        <label for="password" class="form-label">Password:</label>
+                                                        <form:input type="password"
+                                                            class="form-control ${not empty errorPassword ? 'is-invalid' : ''}"
+                                                            path="password" />
+                                                        ${errorPassword}
+                                                    </div>
+                                                    <div class="col-12 col-md-6">
+                                                        <c:set var="errorFullName">
+                                                            <form:errors path="fullName" cssClass="invalid-feedback" />
+                                                        </c:set>
+                                                        <label for="fullName" class="form-label">Full Name:</label>
+                                                        <form:input type="text"
+                                                            class="form-control ${not empty errorFullName ? 'is-invalid' : ''}"
+                                                            path="fullName" />
+                                                        ${errorFullName}
+                                                    </div>
+                                                    <div class="col-12 col-md-6">
+                                                        <label for="phone" class="form-label">Phone number:</label>
                                                         <form:input type="text" class="form-control" path="phone" />
                                                     </div>
-                                                    <div class="mb-3 col-12 col-md-6">
-                                                        <label for="form-label">Full Name:</label>
-                                                        <form:input type="text" class="form-control" path="fullName" />
-                                                    </div>
-                                                    <div class="mb-3 col-12 col-md-6">
-                                                        <label for="form-label">Address:</label>
+                                                    <div class="col-12 col-md-6">
+                                                        <label for="address" class="form-label">Address:</label>
                                                         <form:input type="text" class="form-control" path="address" />
                                                     </div>
-                                                    <div class="mb-3 col-12 col-md-6">
+                                                    <div class="col-12 col-md-6">
                                                         <label class="form-label">Role:</label>
                                                         <form:select class="form-select" path="role.name">
                                                             <form:option value="ADMIN">Admin</form:option>
                                                             <form:option value="USER">User</form:option>
-
                                                         </form:select>
                                                     </div>
-
-                                                    <div class="mb-3 col-12 col-md-6">
-                                                        <label for="avatarFile" class="form-label">Avatar</label>
+                                                    <div class="col-12 col-md-6">
+                                                        <label for="avatarFile" class="form-label">Avatar:</label>
                                                         <input class="form-control" type="file" id="avatarFile"
                                                             name="binFile" accept=".png, .jpg, .jpeg" />
-
                                                     </div>
-                                                    <div class="col-12 md-3">
+                                                    <div class="col-12 col-md-6">
                                                         <img style="max-height: 250px; display: none;"
                                                             alt="avatar preview" id="avatarPreview">
                                                     </div>
-                                                    <div class="col-12 md-5"><button type="submit"
-                                                            class="btn btn-primary">Create</button></div>
-                                                    <div class="col-12 md-5"><a href="/admin/user"
-                                                            class="btn btn-success mt-3">Back</a></div>
-
-
+                                                    <div class="col-12">
+                                                        <button type="submit" class="btn btn-primary">Create</button>
+                                                        <a href="/admin/user" class="btn btn-success ms-2">Back</a>
+                                                    </div>
                                                 </form:form>
+
+
+
+
 
                                             </div>
                                         </div>

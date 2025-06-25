@@ -2,10 +2,11 @@ package vn.hoidanit.laptopshop.controller.admin;
 
 import java.util.List;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.validation.Valid;
 import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.service.UploadService;
 import vn.hoidanit.laptopshop.service.UserService;
@@ -30,15 +32,6 @@ public class UserController {
         this.uploadService = uploadService;
         this.passwordEncoder = passwordEncoder;
 
-    }
-
-    @RequestMapping("/")
-    public String getHomePage(Model model) {
-        List<User> arrUsers = this.userService.getByUserByEmail("user5@gmail.com,bien123");
-        System.out.println(arrUsers);
-        model.addAttribute("eric", "test");
-        model.addAttribute("bin", "from controller with model");
-        return "hello";
     }
 
     @RequestMapping(value = "/admin/user")
@@ -89,9 +82,24 @@ public class UserController {
     }
 
     @PostMapping(value = "/admin/user/create")
-
-    public String createUserPage(Model model, @ModelAttribute("newUser") User bin,
+    public String createUserPage(Model model, @ModelAttribute("newUser") @Valid User bin,
+            BindingResult newUserBindingResult,
             @RequestParam("binFile") MultipartFile file) {
+        // validate
+        // if (newUserBindingResult.hasErrors()) {
+        // newUserBindingResult.getFieldErrors()
+        // .forEach(error -> System.out.println(error.getField() + " - " +
+        // error.getDefaultMessage()));
+        // return "/admin/user/create"; // Trả về trang form với lỗi
+        // }
+        List<FieldError> errors = newUserBindingResult.getFieldErrors();
+        for (FieldError error : errors) {
+            System.out.println(error.getField() + " - " + error.getDefaultMessage());
+        }
+        if (newUserBindingResult.hasErrors()) {
+            return "/admin/user/create";
+        }
+
         String avatar = this.uploadService.handleSaveUploadFile(file, "avatar");
         String hashPassword = this.passwordEncoder.encode(bin.getPassword());
         bin.setAvatar(avatar);
